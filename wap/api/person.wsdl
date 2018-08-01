@@ -1,0 +1,47 @@
+<?xml version="1.0" ?>
+<definitions name="Person" targetNamespace="urn:Person" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="urn:Person" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" xmlns="http://schemas.xmlsoap.org/wsdl/">
+<types xmlns="http://schemas.xmlsoap.org/wsdl/" />
+<portType name="PersonPort"><operation name="say">
+<input message="tns:sayRequest" />
+<output message="tns:sayResponse" />
+</operation>
+<operation name="run">
+<input message="tns:runRequest" />
+<output message="tns:runResponse" />
+</operation>
+</portType>
+<binding name="PersonBinding" type="tns:PersonPort">
+<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http" />
+<operation name="say">
+<soap:operation soapAction="urn:Person#person#say" />
+<input><soap:body use="encoded" namespace="urn:Person" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+</input>
+<output>
+<soap:body use="encoded" namespace="urn:Person" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+</output>
+</operation>
+<operation name="run">
+<soap:operation soapAction="urn:Person#person#run" />
+<input><soap:body use="encoded" namespace="urn:Person" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+</input>
+<output>
+<soap:body use="encoded" namespace="urn:Person" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+</output>
+</operation>
+</binding>
+<service name="Person">
+<documentation />
+<port name="PersonPort" binding="tns:PersonBinding"><soap:address location="http://192.168.3.2:81/api/server.php" />
+</port>
+</service>
+<message name="sayRequest">
+</message>
+<message name="sayResponse">
+<part name="say" type="xsd:string" />
+</message>
+<message name="runRequest">
+</message>
+<message name="runResponse">
+<part name="run" type="xsd:string" />
+</message>
+</definitions>

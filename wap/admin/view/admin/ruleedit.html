@@ -1,0 +1,88 @@
+
+  <body>
+    <div class="x-body">
+        <form action="" method="post" class="layui-form" id="formUpate">
+            <input type="hidden" id="id" name="id"  value="{{$rule.id}}"/>
+                <div class="layui-form-item">
+                    <label for="username" class="layui-form-label">
+                        <span class="x-red">*</span>权限名称
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="name" name="name" required="" lay-verify="required" value="{{$rule.name}}"
+                        autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="name" class="layui-form-label">
+                        <span class="x-red">*</span>控制器行为
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="rule" name="rule" required="" lay-verify="required" value="{{$rule.rule}}"
+                        autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="name" class="layui-form-label">
+                        <span class="x-red">*</span>所属分类
+                    </label>
+                    {{foreach $modules:$module}}
+                    <input type="radio" name="module_id" lay-skin="primary" title="{{$module.name}}" {{if $module['id']== $rule['module_id']}}checked{{/if}}  value="{{$module.id}}">
+                    {{/foreach}}
+                </div>
+                <div class="layui-form-item">
+                    <label for="name" class="layui-form-label">
+                        <span class="x-red">*</span>所属类型
+                    </label>
+                    <input type="radio" name="type" lay-skin="primary" title="菜单"  value="0" {{if $rule['type']== 0}}checked{{/if}}>
+                    <input type="radio" name="type" lay-skin="primary" title="权限"  value="1" {{if $rule['type']== 1}}checked{{/if}}>
+                </div>
+                <div class="layui-form-item">
+                    <label for="username" class="layui-form-label">
+                        <span class="x-red">*</span>显示顺序
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="display_order" name="display_order" required="" lay-verify="required" value="{{$rule.display_order}}"
+                        autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="L_repass" class="layui-form-label">
+                    </label>
+                    <button  class="layui-btn" lay-filter="add" lay-submit="">
+                        修改
+                    </button>
+                </div>
+        </form>
+    </div>
+    <script>
+        layui.use(['form','layer'], function(){
+            $ = layui.jquery;
+          var form = layui.form
+          ,layer = layui.layer;
+          //监听提交
+          form.on('submit(add)', function(){
+            //发异步，把数据提交给php
+            $.post('/admin/admin/ruleedit.html',$('#formUpate').serialize(),function(result){
+            	result = JSON.parse(result);
+                // console.log(result);
+                if (result.status == 0) {
+                    layer.alert(result.msg, {icon: 6},function () {
+                        // 获得frame索引
+                        var index = parent.layer.getFrameIndex(window.name);
+                        // 刷新父iframe
+                        window.parent.location.reload();
+                        //关闭当前frame
+                        parent.layer.close(index);
+                    });
+                } else {
+                    layer.alert(result.msg, {icon: 5});
+                }
+            })
+            return false;
+          })
+        });
+    </script>
+
+  </body>
+
+</html>
